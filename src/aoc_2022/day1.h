@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace aoc2023day1 {
+namespace aoc2022day1 {
     bool read_input(std::vector<std::string>& out, std::string path);
     std::vector<int> parse_input(std::vector<std::string> input);
     int part_one(std::vector<int>& elves);

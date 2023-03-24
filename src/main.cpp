@@ -12,7 +12,7 @@ void print_usage() {
 int solve_2022(const int day, const string path_input) {
     switch (day) {
         case 1: {
-            return aoc2023day1::solve(path_input);
+            return aoc2022day1::solve(path_input);
         } break;
         default: {
             cout << "no solution found for year 2022 day " << day << endl;
