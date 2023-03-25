@@ -168,6 +168,9 @@ int aoc2022day5::solve(const std::string path_input) {
 
     std::vector<aoc2022day5::Instruction> insts = aoc2022day5::parse_instructions(instructions);
 
+    std::cout << "year 2022 day 5" << std::endl;
+    std::cout << "---------------" << std::endl;
+
     std::cout << "part one: " << aoc2022day5::part_one(stacks, insts) << std::endl;
     std::cout << "part two: " << aoc2022day5::part_two(stacks, insts) << std::endl;
 
