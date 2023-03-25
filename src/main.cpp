@@ -10,10 +10,6 @@ void print_usage() {
     cout << "aoc <year> <day> <path_to_input_file>" << endl;
 }
 
-int solve_2022(const int day, const string path_input) {
-    return aoc2022::solve(day, path_input);
-}
-
 int main(int argc, char *argv[]) {
     if (argc < NUM_ARGS) {
         cout << "invalid arguments" << endl;
@@ -27,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     switch (YEAR) {
         case 2022: {
-            return solve_2022(DAY, PATH_INPUT);
+            return aoc2022::solve(DAY, PATH_INPUT);
         } break;
         default: {
             cout << "no solution found for year " << YEAR << " day " << DAY << endl;
