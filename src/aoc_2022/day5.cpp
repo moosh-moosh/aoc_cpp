@@ -148,8 +148,8 @@ namespace aoc2022day5 {
     }
 
     int solve(const std::string path_input) {
-        std::vector<std::string> stack_lines, instructions;
-        if (!read_input(stack_lines, instructions, path_input)) {
+        std::vector<std::string> stack_lines, instruction_lines;
+        if (!read_input(stack_lines, instruction_lines, path_input)) {
             std::cout << "error reading input from " << path_input << std::endl;
             return 1;
         }
@@ -167,13 +167,13 @@ namespace aoc2022day5 {
         std::vector<std::stack<char>> stacks(STACK_COUNT);
         build_stacks(stacks, stack_lines, STACK_COUNT);
 
-        std::vector<Instruction> insts = parse_instructions(instructions);
+        std::vector<Instruction> instructions = parse_instructions(instruction_lines);
 
         std::cout << "year 2022 day 5" << std::endl;
         std::cout << "---------------" << std::endl;
 
-        std::cout << "part one: " << part_one(stacks, insts) << std::endl;
-        std::cout << "part two: " << part_two(stacks, insts) << std::endl;
+        std::cout << "part one: " << part_one(stacks, instructions) << std::endl;
+        std::cout << "part two: " << part_two(stacks, instructions) << std::endl;
 
         return 0;
     }
