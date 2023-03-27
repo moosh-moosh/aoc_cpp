@@ -29,14 +29,13 @@ namespace aoc2022day7 {
         return path;
     }
 
-    std::map<std::string, int> read_file(std::map<std::string, int> dirs, std::vector<std::string> path, int sz) {
+    void process_file(std::map<std::string, int>& dirs, std::vector<std::string> path, int sz) {
         const std::string PWD = get_path_str(path);
         dirs[PWD] += sz;
         while (path.size() > 0) {
             path.pop_back();
             dirs[get_path_str(path)] += sz;
         }
-        return dirs;
     }
 
     std::string get_path_str(std::vector<std::string> path) {
@@ -49,7 +48,10 @@ namespace aoc2022day7 {
         return ss.str();
     }
 
-    std::map<std::string, int> process_input(std::map<std::string, int> dirs, std::vector<std::string> path, std::vector<std::string>& input) {
+    std::map<std::string, int> process_input(std::vector<std::string>& input) {
+        std::map<std::string, int> dirs;
+        std::vector<std::string> path;
+
         for (std::string line : input) {
             Action a = parse_line(line);
             switch (a.line_type) {
@@ -57,7 +59,7 @@ namespace aoc2022day7 {
                     path = cmd_cd(path, a.data);
                 } break;
                 case LineType::FILE: {
-                    dirs = read_file(dirs, path, std::stoi(a.data));
+                    process_file(dirs, path, std::stoi(a.data));
                 } break;
                 case LineType::IGNORE: {
                     continue;
@@ -88,7 +90,13 @@ namespace aoc2022day7 {
         return action;
     }
 
-    int part_one(std::map<std::string, int>& dirs) {
+    int get_space_to_free(int space_used) {
+        const int SPACE_AVAILABLE = TOTAL_DISK - space_used;
+        const int SPACE_TO_FREE = SPACE_REQUIRED - SPACE_AVAILABLE;
+        return SPACE_TO_FREE;
+    }
+
+    int part_one(const std::map<std::string, int>& dirs) {
         int answer = 0;
         for (auto const& kv : dirs) {
             if (kv.first == ROOT) {
@@ -102,6 +110,20 @@ namespace aoc2022day7 {
         return answer;
     }
 
+    int part_two(const std::map<std::string, int>& dirs) {
+        const int SPACE_TO_FREE = get_space_to_free(dirs.at(ROOT));
+        int smallest_dir = 0;
+        for (auto const& kv : dirs) {
+            if (kv.second >= SPACE_TO_FREE) {
+                if (smallest_dir > 0 && kv.second > smallest_dir) {
+                    continue;
+                }
+                smallest_dir = kv.second;
+            }
+        }
+        return smallest_dir;
+    }
+
     int solve(const std::string path_input) {
         std::vector<std::string> input;
 
@@ -110,15 +132,13 @@ namespace aoc2022day7 {
             return 1;
         }
 
-        std::map<std::string, int> dirs;
-        std::vector<std::string> path;
-
-        dirs = process_input(dirs, path, input);
+        const std::map<std::string, int> DIRS = process_input(input);
 
         std::cout << "year 2022 day 7" << std::endl;
         std::cout << "---------------" << std::endl;
 
-        std::cout << "part one: " << part_one(dirs) << std::endl;
+        std::cout << "part one: " << part_one(DIRS) << std::endl;
+        std::cout << "part two: " << part_two(DIRS) << std::endl;
 
         return 0;
     }
