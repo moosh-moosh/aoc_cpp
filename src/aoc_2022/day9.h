@@ -44,7 +44,6 @@ namespace aoc2022day9 {
     int solve(const std::string path_input);
     bool read_input(std::vector<Instruction>& out, const std::string path_input);
     Instruction parse_instruction(std::string line);
-    void print_instruction(Instruction& instruction);
     Rope create_rope(size_t len_tail);
     size_t get_distance(Point& p1, Point& p2);
     void move(Rope& rope, Direction dir);

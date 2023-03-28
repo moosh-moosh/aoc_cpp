@@ -32,23 +32,6 @@ namespace aoc2022day9 {
         return instruction;
     }
 
-    void print_instruction(Instruction& instruction) {
-        switch (instruction.dir) {
-            case Direction::LEFT: {
-                std::cout << "move LEFT " << instruction.steps << " steps" << std::endl;
-            } break;
-            case Direction::UP: {
-                std::cout << "move UP " << instruction.steps << " steps" << std::endl;
-            } break;
-            case Direction::RIGHT: {
-                std::cout << "move RIGHT " << instruction.steps << " steps" << std::endl;
-            } break;
-            case Direction::DOWN: {
-                std::cout << "move DOWN " << instruction.steps << " steps" << std::endl;
-            } break;
-        }
-    }
-
     Rope create_rope(size_t len_tail) {
         Rope rope;
         rope.head = Point{0, 0};
