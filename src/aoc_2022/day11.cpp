@@ -2,6 +2,7 @@
 #include <fstream>
 #include <regex>
 #include <stdexcept>
+#include <numeric>
 #include <algorithm>
 
 namespace aoc2022day11 {
@@ -114,17 +115,27 @@ namespace aoc2022day11 {
 
         if (std::regex_search(line, match, pattern)) {
             const int n = std::stoi(match[1]);
-            monkey.test = [n](long item) {
-                return item % n == 0;
-            };
+            monkey.test_n = n;
         }
     }
 
-    void process_round(std::map<int, Monkey> &monkeys, bool relief) {
+    long get_lcm(std::map<int, Monkey> &monkeys) {
+        long _lcm = 0;
+        for (auto const& kv : monkeys) {
+            if (_lcm) {
+                _lcm = _lcm * kv.second.test_n;
+            } else {
+                _lcm = kv.second.test_n;
+            }
+        }
+        return _lcm;
+    }
+
+    void process_round(std::map<int, Monkey> &monkeys, bool relief, long lcm) {
         for (auto const& kv : monkeys) {
             Monkey m = kv.second;
             for (long item : m.items) {
-                m.inspect(item, monkeys, relief);
+                m.inspect(item, monkeys, relief, lcm);
             }
             m.items = std::vector<long>();
             monkeys[m.id] = m;
@@ -132,7 +143,7 @@ namespace aoc2022day11 {
     }
 
     long monkey_business(std::map<int, Monkey> &monkeys) {
-        std::vector<int> inspect_counts;
+        std::vector<long> inspect_counts;
         for (auto const& kv : monkeys) {
             inspect_counts.push_back(kv.second.inspect_count);
         }
@@ -140,9 +151,18 @@ namespace aoc2022day11 {
         return inspect_counts[0] * inspect_counts[1];
     }
 
-    long part_one(std::map<int, Monkey> &monkeys) {
+    long part_one(std::map<int, Monkey> monkeys) {
         for (size_t i = 0; i < 20; i++) {
-            process_round(monkeys, true);
+            process_round(monkeys, true, 0);
+        }
+
+        return monkey_business(monkeys);
+    }
+
+    long part_two(std::map<int, Monkey> monkeys) {
+        const long lcm = get_lcm(monkeys);
+        for (size_t i = 0; i < 10000; i++) {
+            process_round(monkeys, false, lcm);
         }
 
         return monkey_business(monkeys);
@@ -159,6 +179,7 @@ namespace aoc2022day11 {
         std::cout << "year 2022 day 11" << std::endl;
         std::cout << "----------------" << std::endl;
         std::cout << "part one: " << part_one(monkeys) << std::endl;
+        std::cout << "part two: " << part_two(monkeys) << std::endl;
 
         return 0;
     }
