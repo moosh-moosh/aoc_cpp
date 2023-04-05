@@ -39,9 +39,10 @@ namespace aoc2022day12 {
 
     int solve(const std::string path_input);
     int part_one(std::vector<std::vector<Area>> &height_map);
+    int part_two(std::vector<std::vector<Area>> &height_map);
     bool read_input(std::vector<std::vector<Area>> &height_map, const std::string path_input);
-    std::vector<Area> get_valid_nbors(std::vector<std::vector<Area>> &height_map, Area a);
-    int bfs(std::vector<std::vector<Area>> height_map, Area start, Area end);
+    std::vector<Area> get_valid_nbors(std::vector<std::vector<Area>> &height_map, Area a, bool reverse);
+    int bfs(std::vector<std::vector<Area>> height_map, Area start, Area end, bool reverse);
 }
 
 

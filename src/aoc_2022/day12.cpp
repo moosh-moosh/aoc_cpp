@@ -41,7 +41,7 @@ namespace aoc2022day12 {
         return true;
     }
 
-    std::vector<Area> get_valid_nbors(std::vector<std::vector<Area>> &height_map, Area a) {
+    std::vector<Area> get_valid_nbors(std::vector<std::vector<Area>> &height_map, Area a, bool reverse) {
         std::vector<Area> nbors = { Area{0, a.row, a.col+1},
                                     Area{0, a.row, a.col-1},
                                     Area{0, a.row-1, a.col},
@@ -57,7 +57,9 @@ namespace aoc2022day12 {
 
                 const Area n = height_map[ar.row][ar.col];
 
-                if (n.elevation <= a.elevation+1) {
+                if (!reverse && n.elevation <= a.elevation+1) {
+                    valid_nbors.push_back(height_map[ar.row][ar.col]);
+                } else if (reverse && n.elevation >= a.elevation - 1) {
                     valid_nbors.push_back(height_map[ar.row][ar.col]);
                 }
             }
@@ -66,18 +68,20 @@ namespace aoc2022day12 {
         return valid_nbors;
     }
 
-    int bfs(std::vector<std::vector<Area>> height_map, Area start, Area end) {
+    int bfs(std::vector<std::vector<Area>> height_map, Area start, Area end, bool reverse) {
         std::queue<Area> q;
         q.push(start);
         height_map[start.row][start.col].visited = true;
         Area cur;
         while (!q.empty()) {
             cur = q.front();
-            if (cur.row == end.row && cur.col == end.col) {
+            if (!reverse && cur.row == end.row && cur.col == end.col) {
+                return cur.distance;
+            } else if (reverse && cur.elevation == (int)'a') {
                 return cur.distance;
             }
             q.pop();
-            std::vector<Area> nbors = get_valid_nbors(height_map, cur);
+            std::vector<Area> nbors = get_valid_nbors(height_map, cur, reverse);
             for (Area &n : nbors) {
                 Area &a = height_map[n.row][n.col];
                 if (a.visited) {
@@ -92,7 +96,11 @@ namespace aoc2022day12 {
     }
 
     int part_one(std::vector<std::vector<Area>> &height_map) {
-        return bfs(height_map, start, end);
+        return bfs(height_map, start, end, false);
+    }
+
+    int part_two(std::vector<std::vector<Area>> &height_map) {
+        return bfs(height_map, end, end, true);
     }
 
 
@@ -107,6 +115,7 @@ namespace aoc2022day12 {
         std::cout << "year 2022, day 12" << std::endl;
         std::cout << "-----------------" << std::endl;
         std::cout << "part one: " << part_one(height_map) << std::endl;
+        std::cout << "part two: " << part_two(height_map) << std::endl;
 
         return 0;
     }
