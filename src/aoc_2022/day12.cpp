@@ -53,7 +53,7 @@ namespace aoc2022day12 {
             if (ar.row >= 0 &&
                 ar.row < (int)height_map.size() &&
                 ar.col >= 0 &&
-                ar.col <= (int)height_map[0].size()) {
+                ar.col < (int)height_map[0].size()) {
 
                 const Area n = height_map[ar.row][ar.col];
 
