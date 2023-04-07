@@ -11,6 +11,7 @@
 #include "day10.h"
 #include "day11.h"
 #include "day12.h"
+#include "day13.h"
 
 int aoc2022::solve(const int day, const std::string path_input) {
     switch (day) {
@@ -49,6 +50,9 @@ int aoc2022::solve(const int day, const std::string path_input) {
         }
         case 12: {
             return aoc2022day12::solve(path_input);
+        }
+        case 13: {
+            return aoc2022day13::solve(path_input);
         }
         default: {
             std::cout << "no solution available for year 2022 day " << day << std::endl;
